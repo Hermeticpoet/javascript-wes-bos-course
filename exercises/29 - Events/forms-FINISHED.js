@@ -1,6 +1,6 @@
 const wes = document.querySelector('.wes');
 
-wes.addEventListener('click', function(event) {
+wes.addEventListener('click', (event) => {
   const shouldChangePage = confirm(
     'This website might be malicious!, do you wish to proceed?'
   );
@@ -11,7 +11,7 @@ wes.addEventListener('click', function(event) {
 
 const signupForm = document.querySelector('[name="signup"]');
 
-signupForm.addEventListener('submit', function(event) {
+signupForm.addEventListener('submit', (event) => {
   const name = event.currentTarget.name.value;
   if (name.includes('chad')) {
     alert('Sorry bro');
