@@ -21,7 +21,7 @@ function handleOption(event) {
   const { value, name } = event.currentTarget;
   options[name] = parseFloat(value);
 }
-optionsInputs.forEach(input => input.addEventListener('input', handleOption));
+optionsInputs.forEach((input) => input.addEventListener('input', handleOption));
 
 // Write a fucntion that will populate the users video
 async function populateVideo() {
@@ -36,14 +36,6 @@ async function populateVideo() {
   canvas.height = video.videoHeight;
   faceCanvas.width = video.videoWidth;
   faceCanvas.height = video.videoHeight;
-}
-
-async function detect() {
-  const faces = await faceDetector.detect(video);
-  // ask the browser when the next animation frame is, and tell it to run detect for us
-  faces.forEach(drawFace);
-  faces.forEach(censor);
-  requestAnimationFrame(detect);
 }
 
 function drawFace(face) {
@@ -89,4 +81,13 @@ function censor({ boundingBox: face }) {
   );
 }
 
+async function detect() {
+  const faces = await faceDetector.detect(video);
+  // ask the browser when the next animation frame is, and tell it to run detect for us
+  faces.forEach(drawFace);
+  faces.forEach(censor);
+  requestAnimationFrame(detect);
+}
+
 populateVideo().then(detect);
+console.log('Its working..!');

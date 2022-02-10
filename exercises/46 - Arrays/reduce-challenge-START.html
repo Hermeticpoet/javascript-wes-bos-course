@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,11 +11,478 @@
 
 <body>
   <script>
+    /* eslint-disable no-unused-expressions */
     // Grab all the text from a web page
-    // Count how many times each letter and number occurs
+
+    const text = `
+    Skip to main content
+Skip to search
+Skip to select language
+Technologies
+References & Guides
+Feedback
+Search MDN
+Site search... (Press "/" to focus)
+Web technology for developers
+JavaScript
+JavaScript reference
+Standard built-in objects
+Map
+Change language
+Table of contents
+Description
+Constructor
+Static properties
+Instance properties
+Instance methods
+Examples
+Specifications
+Browser compatibility
+See also
+Map
+The Map object holds key-value pairs and remembers the original insertion order of the keys. Any value (both objects and primitive values) may be used as either a key or a value.
 
 
-  </script>
+Description
+A Map object iterates its elements in insertion order — a for...of loop returns an array of [key, value] for each iteration.
+
+Key equality
+Key equality is based on the sameValueZero algorithm.
+NaN is considered the same as NaN (even though NaN !== NaN) and all other values are considered equal according to the semantics of the === operator.
+In the current ECMAScript specification, -0 and +0 are considered equal, although this was not so in earlier drafts. See "Value equality for -0 and 0" in the Browser compatibility table for details.
+Objects vs. Maps
+Object is similar to Map—both let you set keys to values, retrieve those values, delete keys, and detect whether something is stored at a key. For this reason (and because there were no built-in alternatives), Object has been used as Map historically.
+
+However, there are important differences that make Map preferable in some cases:
+
+Map	Object
+Accidental Keys	A Map does not contain any keys by default. It only contains what is explicitly put into it.	
+An Object has a prototype, so it contains default keys that could collide with your own keys if you're not careful.
+
+Note: As of ES5, this can be bypassed by using Object.create(null), but this is seldom done.
+
+Key Types	A Map's keys can be any value (including functions, objects, or any primitive).	The keys of an Object must be either a String or a Symbol.
+Key Order	
+The keys in Map are ordered in a simple, straightforward way: A Map object iterates entries, keys, and values in the order of entry insertion.
+
+Although the keys of an ordinary Object are ordered now, this was not always the case, and the order is complex. As a result, it's best not to rely on property order.
+
+The order was first defined for own properties only in ECMAScript 2015; ECMAScript 2020 defines order for inherited properties as well. See the OrdinaryOwnPropertyKeys and EnumerateObjectProperties abstract specification operations. But note that no single mechanism iterates all of an object's properties; the various mechanisms each include different subsets of properties. (for-in includes only enumerable string-keyed properties; Object.keys includes only own, enumerable, string-keyed properties; Object.getOwnPropertyNames includes own, string-keyed properties even if non-enumerable; Object.getOwnPropertySymbols does the same for just Symbol-keyed properties, etc.)
+
+Size
+
+The number of items in a Map is easily retrieved from its size property.	The number of items in an Object must be determined manually.
+Iteration	A Map is an iterable, so it can be directly iterated.	
+Object does not implement an iteration protocol, and so objects are not directly iterable using the JavaScript for...of statement (by default).
+
+Note:
+
+An object can implement the iteration protocol, or you can get an iterable for an object using Object.keys or Object.entries.
+The for...in statement allows you to iterate over the enumerable properties of an object.
+Performance	
+Performs better in scenarios involving frequent additions and removals of key-value pairs.
+
+Not optimized for frequent additions and removals of key-value pairs.
+
+Serialization and parsing	
+No native support for serialization or parsing.
+
+(But you can build your own serialization and parsing support for Map by using JSON.stringify() with its replacer argument, and by using JSON.parse() with its reviver argument. See the Stack Overflow question How do you JSON.stringify an ES6 Map?).
+
+Native support for serialization from Object to JSON, using JSON.stringify().
+
+Native support for parsing from JSON to Object, using JSON.parse().
+
+Setting object properties
+Setting Object properties works for Map objects as well, and can cause considerable confusion.
+
+Therefore, this appears to work in a way:
+
+const wrongMap = new Map()
+wrongMap['bla'] = 'blaa'
+wrongMap['bla2'] = 'blaaa2'
+
+console.log(wrongMap)  // Map { bla: 'blaa', bla2: 'blaaa2' }
+Copy to Clipboard
+But that way of setting a property does not interact with the Map data structure. It uses the feature of the generic object. The value of 'bla' is not stored in the Map for queries. Other operations on the data fail:
+
+wrongMap.has('bla')    // false
+wrongMap.delete('bla') // false
+console.log(wrongMap)  // Map { bla: 'blaa', bla2: 'blaaa2' }
+Copy to Clipboard
+The correct usage for storing data in the Map is through the set(key, value) method.
+
+const contacts = new Map()
+contacts.set('Jessie', {phone: "213-555-1234", address: "123 N 1st Ave"})
+contacts.has('Jessie') // true
+contacts.get('Hilary') // undefined
+contacts.set('Hilary', {phone: "617-555-4321", address: "321 S 2nd St"})
+contacts.get('Jessie') // {phone: "213-555-1234", address: "123 N 1st Ave"}
+contacts.delete('Raymond') // false
+contacts.delete('Jessie') // true
+console.log(contacts.size) // 1
+Copy to Clipboard
+Constructor
+Map()
+Creates a new Map object.
+
+Static properties
+get Map[@@species]
+The constructor function that is used to create derived objects.
+
+Instance properties
+Map.prototype.size
+Returns the number of key/value pairs in the Map object.
+
+Instance methods
+Map.prototype.clear()
+Removes all key-value pairs from the Map object.
+
+Map.prototype.delete(key)
+Returns true if an element in the Map object existed and has been removed, or false if the element does not exist. Map.prototype.has(key) will return false afterwards.
+
+Map.prototype.get(key)
+Returns the value associated to the key, or undefined if there is none.
+
+Map.prototype.has(key)
+Returns a boolean asserting whether a value has been associated to the key in the Map object or not.
+
+Map.prototype.set(key, value)
+Sets the value for the key in the Map object. Returns the Map object.
+
+Iteration methods
+Map.prototype[@@iterator]()
+Returns a new Iterator object that contains an array of [key, value] for each element in the Map object in insertion order.
+
+Map.prototype.keys()
+Returns a new Iterator object that contains the keys for each element in the Map object in insertion order.
+
+Map.prototype.values()
+Returns a new Iterator object that contains the values for each element in the Map object in insertion order.
+
+Map.prototype.entries()
+Returns a new Iterator object that contains an array of [key, value] for each element in the Map object in insertion order.
+
+Map.prototype.forEach(callbackFn[, thisArg])
+Calls callbackFn once for each key-value pair present in the Map object, in insertion order. If a thisArg parameter is provided to forEach, it will be used as the this value for each callback.
+
+Examples
+Using the Map object
+const myMap = new Map()
+
+const keyString = 'a string'
+const keyObj    = {}
+const keyFunc   = function() {}
+
+// setting the values
+myMap.set(keyString, "value associated with 'a string'")
+myMap.set(keyObj, 'value associated with keyObj')
+myMap.set(keyFunc, 'value associated with keyFunc')
+
+myMap.size              // 3
+
+// getting the values
+myMap.get(keyString)    // "value associated with 'a string'"
+myMap.get(keyObj)       // "value associated with keyObj"
+myMap.get(keyFunc)      // "value associated with keyFunc"
+
+myMap.get('a string')    // "value associated with 'a string'"
+                         // because keyString === 'a string'
+myMap.get({})            // undefined, because keyObj !== {}
+myMap.get(function() {}) // undefined, because keyFunc !== function () {}
+Copy to Clipboard
+Using NaN as Map keys
+NaN can also be used as a key. Even though every NaN is not equal to itself (NaN !== NaN is true), the following example works because NaNs are indistinguishable from each other:
+
+const myMap = new Map()
+myMap.set(NaN, 'not a number')
+
+myMap.get(NaN)
+// "not a number"
+
+const otherNaN = Number('foo')
+myMap.get(otherNaN)
+// "not a number"
+Copy to Clipboard
+Iterating Map with for..of
+Maps can be iterated using a for..of loop:
+
+const myMap = new Map()
+myMap.set(0, 'zero')
+myMap.set(1, 'one')
+
+for (const [key, value] of myMap) {
+  console.log(key + ' = ' + value)
+}
+// 0 = zero
+// 1 = one
+
+for (const key of myMap.keys()) {
+  console.log(key)
+}
+// 0
+// 1
+
+for (const value of myMap.values()) {
+  console.log(value)
+}
+// zero
+// one
+
+for (const [key, value] of myMap.entries()) {
+  console.log(key + ' = ' + value)
+}
+// 0 = zero
+// 1 = one
+Copy to Clipboard
+Iterating Map with forEach()
+Maps can be iterated using the forEach() method:
+
+myMap.forEach(function(value, key) {
+  console.log(key + ' = ' + value)
+})
+// 0 = zero
+// 1 = one
+Copy to Clipboard
+Relation with Array objects
+const kvArray = [['key1', 'value1'], ['key2', 'value2']]
+
+// Use the regular Map constructor to transform a 2D key-value Array into a map
+const myMap = new Map(kvArray)
+
+myMap.get('key1') // returns "value1"
+
+// Use Array.from() to transform a map into a 2D key-value Array
+console.log(Array.from(myMap)) // Will show you exactly the same Array as kvArray
+
+// A succinct way to do the same, using the spread syntax
+console.log([...myMap])
+
+// Or use the keys() or values() iterators, and convert them to an array
+console.log(Array.from(myMap.keys())) // ["key1", "key2"]
+Copy to Clipboard
+Cloning and merging Maps
+Just like Arrays, Maps can be cloned:
+
+const original = new Map([
+  [1, 'one']
+])
+
+const clone = new Map(original)
+
+console.log(clone.get(1))       // one
+console.log(original === clone) // false (useful for shallow comparison)
+Copy to Clipboard
+Note: Keep in mind that the data itself is not cloned.
+
+Maps can be merged, maintaining key uniqueness:
+
+const first = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+])
+
+const second = new Map([
+  [1, 'uno'],
+  [2, 'dos']
+])
+
+// Merge two maps. The last repeated key wins.
+// Spread operator essentially converts a Map to an Array
+const merged = new Map([...first, ...second])
+
+console.log(merged.get(1)) // uno
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
+Copy to Clipboard
+Maps can be merged with Arrays, too:
+
+const first = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+])
+
+const second = new Map([
+  [1, 'uno'],
+  [2, 'dos']
+])
+
+// Merge maps with an array. The last repeated key wins.
+const merged = new Map([...first, ...second, [1, 'eins']])
+
+console.log(merged.get(1)) // eins
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
+Copy to Clipboard
+Specifications
+Specification
+ECMAScript Language Specification (ECMAScript)
+# sec-map-objects
+Browser compatibility
+Report problems with this compatibility data on GitHub
+desktop	mobile	server
+Chrome	Edge	Firefox	Internet Explorer	Opera	Safari	WebView Android	Chrome Android	Firefox for Android	Opera Android	Safari on iOS	Samsung Internet	Deno	Node.js
+Map
+Full support38	Full support12	Full support13	Full support11	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+Map() constructor
+Full support38	Full support12	Full support13	Full support11	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+new Map(iterable)
+Full support38	Full support12	Full support13	No supportNo	Full support25	Full support9	Full support38	Full support38	Full support14	Full support25	Full support9	Full support3.0	Full support1.0	Full support0.12.0
+Map() without new throws
+Full support38	Full support12	Full support42	Full support11	Full support25	Full support9	Full support38	Full support38	Full support42	Full support25	Full support9	Full support3.0	Full support1.0	Full support0.12.0
+new Map(null)
+Full support38	Full support12	Full support37	Full support11	Full support25	Full support9	Full support38	Full support38	Full support37	Full support25	Full support9	Full support3.0	Full support1.0	Full support0.12.0Open
+clear
+Full support38	Full support12	Full support19	Full support11	Full support25	Full support8	Full support38	Full support38	Full support19	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+delete
+Full support38	Full support12	Full support13	Full support11	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+entries
+Full support38	Full support12	Full support20	No supportNo	Full support25	Full support8	Full support38	Full support38	Full support20	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+forEach
+Full support38	Full support12	Full support25	Full support11	Full support25	Full support8	Full support38	Full support38	Full support25	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+get
+Full support38	Full support12	Full support13	Full support11	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+has
+Full support38	Full support12	Full support13	Full support11	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+Key equality for -0 and 0
+Full support38	Full support12	Full support29	No supportNo	Full support25	Full support9	Full support38	Full support38	Full support29	Full support25	Full support9	Full support3.0	Full support1.0	Full support4.0.0
+keys
+Full support38	Full support12	Full support20	No supportNo	Full support25	Full support8	Full support38	Full support38	Full support20	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+set
+Full support38	Full support12	Full support13	Partial support11footnoteOpen	Full support25	Full support8	Full support38	Full support38	Full support14	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0Open
+size
+Full support38	Full support12	Full support19footnoteOpen	Full support11	Full support25	Full support8	Full support38	Full support38	Full support19footnoteOpen	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+values
+Full support38	Full support12	Full support20	No supportNo	Full support25	Full support8	Full support38	Full support38	Full support20	Full support25	Full support8	Full support3.0	Full support1.0	Full support0.12.0
+@@iterator
+Full support43	Full support12	Full support36Open	No supportNo	Full support30	Full support10	Full support43	Full support43	Full support36Open	Full support30	Full support10	Full support4.0	Full support1.0	Full support0.12.0
+@@species
+Full support51	Full support13	Full support41	No supportNo	Full support38	Full support10	Full support51	Full support51	Full support41	Full support41	Full support10	Full support5.0	Full support1.0	Full support6.5.0Open
+@@toStringTag
+Full support44	Full support79	Full support51	No supportNo	No supportNo	Full support9.1	Full support44	Full support44	Full support51	No supportNo	Full support9.3	Full support4.0	Full support1.0	Full support6.0.0
+Legend
+Full supportFull support
+Partial supportPartial support
+No supportNo support
+See implementation notes.
+User must explicitly enable this feature.
+Uses a non-standard name.
+See also
+A polyfill of Map is available in core-js
+Set
+WeakMap
+WeakSet
+Found a problem with this page?
+Edit on GitHub
+Source on GitHub
+Report a problem with this content on GitHub
+Want to fix the problem yourself? See our Contribution guide.
+Last modified: Jul 18, 2021, by MDN contributors
+
+Change your language
+Select your preferred language
+English (US)
+ Change language
+Related Topics
+Standard built-in objects
+Map
+Properties
+get Map[@@species]
+Map.prototype[@@toStringTag]
+Map.prototype.size
+Methods
+Map.prototype[@@iterator]()
+Map.prototype.clear()
+Map.prototype.delete()
+Map.prototype.entries()
+Map.prototype.forEach()
+Map.prototype.get()
+Map.prototype.has()
+Map.prototype.keys()
+Map.prototype.set()
+Map.prototype.values()
+Inheritance:
+Function
+Properties
+Function.arguments
+Function.caller
+Function.displayName
+Function.length
+Function.name
+Methods
+Function.prototype.apply()
+Function.prototype.bind()
+Function.prototype.call()
+Function.prototype.toSource()
+Function.prototype.toString()
+Object
+Properties
+Object.prototype.constructor
+Object.prototype.__proto__
+Methods
+Object.prototype.__defineGetter__()
+Object.prototype.__defineSetter__()
+Object.prototype.__lookupGetter__()
+Object.prototype.__lookupSetter__()
+Object.prototype.hasOwnProperty()
+Object.prototype.isPrototypeOf()
+Object.prototype.propertyIsEnumerable()
+Object.setPrototypeOf()
+Object.prototype.toLocaleString()
+Object.prototype.toSource()
+Object.prototype.toString()
+Object.prototype.valueOf()
+Web Technologies
+Learn Web Development
+About MDN
+Feedback
+About
+MDN Web Docs Store
+Contact Us
+Firefox
+MDN
+MDN on Twitter
+MDN on Github
+Mozilla
+Mozilla on Twitter
+Mozilla on Instagram
+© 2005-2022 Mozilla and individual contributors. Content is available under these licenses.
+
+Terms
+Privacy
+Cookies
+    `;
+
+// Count how many times each letter and number occurs
+
+function isValidChar(char) {
+  return char.match(/[a-z0-9]/i);
+}
+
+const lowercase = (char) => char.toLowerCase();
+
+function instanceCounter(count, char) {
+  count[char]
+        ? // if it exits
+          (count[char] += 1)
+    : // if it does not exit
+          (count[char] = 1);
+  return count;
+}
+const result = text
+  .split('') // split each char into an item of an array
+  .filter(isValidChar) // filter for valid characters
+  .map(lowercase)
+  .reduce(instanceCounter, {}); // convert every letter to lowercase
+
+function sortByValue(a, b) {
+  return a[1] - b[1];
+}
+const sortedResult = Object.entries(result).sort(sortByValue);
+console.table(sortedResult);
+      </script>
 </body>
 
 </html>
