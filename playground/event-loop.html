@@ -6,11 +6,71 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Event Loop</title>
   <link rel="stylesheet" href="../base.css">
+  <style>
+    .go {
+      cursor: pointer;
+      margin: 5rem;
+      background-color: white;
+      padding: 5rem;
+      width: 15rem;
+      height: auto;
+      text-align: center;
+      transition: all 0.25s;
+    }
+    .go.circle {
+      border-radius: 50%;
+    }
+    .go.red {
+      background-color: red;
+    }
+    .go.purple {
+      background-color: purple;
+      color: white;
+    }
+    .go.fade {
+      opacity: 0.1;
+    }
+  </style>
 </head>
 
 <body>
+  <div class="go">Click Me</div>
   <script>
+    //  console.log('Starting');
+    //  setTimeout(() => {
+    //    console.log('Running...');
+    //  }, 2000);
+    //  console.log('Ending');
 
+    // Christmas Tree Code - known as Callback Hell as each piece of code
+    // must wait for the last piece of code to execute before it runs itself!
+    const go = document.querySelector('.go');
+    // 1. Change the text to GO when clicked.
+    go.addEventListener('click', (e) => {
+      const el = e.currentTarget;
+      el.textContent = 'GO';
+      // 2. Make it a circle after 2 seconds
+      setTimeout(() => {
+        el.classList.add('circle');
+        // 3. Make it red after 0.5s
+        setTimeout(() => {
+          el.classList.add('red');
+          // 4. Make it square after 0.25s
+          setTimeout(() => {
+            el.classList.remove('circle');
+            // 5. Make it purple after 0.3s
+            setTimeout(() => {
+              el.classList.remove('red');
+              el.classList.add('purple');
+              // 6. fade out after 0.5s
+              setTimeout(() => {
+                el.classList.add('fade');
+              }, 500);
+            }, 300);
+          }, 250);
+        }, 500);
+      }, 2000);
+    });
   </script>
 </body>
 

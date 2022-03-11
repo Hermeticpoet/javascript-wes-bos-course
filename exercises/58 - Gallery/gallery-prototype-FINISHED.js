@@ -16,14 +16,14 @@ function Gallery(gallery) {
   this.handleClickOutside = this.handleClickOutside.bind(this);
 
   // These are our Event Listeners!
-  this.images.forEach(image =>
-    image.addEventListener('click', e => this.showImage(e.currentTarget))
+  this.images.forEach((image) =>
+    image.addEventListener('click', (e) => this.showImage(e.currentTarget))
   );
 
   // loop over each image
-  this.images.forEach(image => {
+  this.images.forEach((image) => {
     // attach an event listener for each image
-    image.addEventListener('keyup', e => {
+    image.addEventListener('keyup', (e) => {
       // when that is keyup'd, check if it was enter
       if (e.key === 'Enter') {
         // if it was, show that image

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class add/remove looping</title>
+    <style>
+        .slides,
+        .thumbs {
+            border:2px solid black;
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            margin: 0 auto;
+            overflow: hidden;
+            width: 300px;
+            height: 300px;
+            background-color: purple;
+        }
+        .thumbs {
+            background-color: blue;
+            left: 380px;
+        }
+
+        .slide,
+        .thumb {
+            border: 1px solid black;
+        }
+
+        .slide.current,
+        .thumb.current {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider">
+        <div class="slides">
+          <div class="slide current" id="pair-1">1</div>
+          <div class="slide" id="pair-2">2</div>
+          <div class="slide" id="pair-3">3</div>
+          <div class="slide" id="pair-4">4</div>
+        </div>
+        <div class="controls">
+            <button class="goToPrev"><i class="fa-solid fa-circle-arrow-left"></i></button>
+            <button class="goToNext"><i class="fa-solid fa-circle-arrow-right"></i></button>
+        </div>
+    </div>
+    <div class="thumbnail-slider">
+        <div class="thumbs">
+            <div class="thumb" id="pair-1">1</div>
+            <div class="thumb" id="pair-2">2</div>
+            <div class="thumb" id="pair-3">3</div>
+            <div class="thumb" id="pair-4">4</div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    const thumbs = document.querySelector('.thumbs');
+    const thumb = thumbs.children;
+
+    for (let i = 0; i < thumb.length; i++) {
+      const res = thumb[i];
+      res.classList.add('current');
+    }
+
+    // const pairOne = document.querySelectorAll('#pair-1');
+    // const pairTwo = document.querySelectorAll('#pair-2');
+    // const pairThree = document.querySelectorAll('#pair-3');
+    // const pairFour = document.querySelectorAll('#pair-4');
+
+    // if (pairOne[0].classList.contains('current')) {
+    //   pairOne[1].classList.add('current');
+    //   pairTwo[1].classList.remove('current');
+    //   pairThree[1].classList.remove('current');
+    //   pairFour[1].classList.remove('current');
+    // } else if (pairTwo[0].classlist.contains('current')) {
+    //   pairTwo[1].classList.add('current');
+    //   pairOne[1].classList.remove('current');
+    //   pairThree[1].classList.remove('current');
+    //   pairFour[1].classList.remove('current');
+    // } else if (pairThree[0].classlist.contains('current')) {
+    //   pairThree[1].classList.add('current');
+    //   pairOne[1].classList.remove('current');
+    //   pairTwo[1].classList.remove('current');
+    //   pairFour[1].classList.remove('current');
+    // } else if (pairFour[0].classList.add('current')) {
+    //   pairFour[1].classList.add('current');
+    //   pairOne[1].classList.remove('current');
+    //   pairTwo[1].classList.remove('current');
+    //   pairThree[1].classList.remove('current');
+    // }
+
+    // // variables to control the thumbnails
+    // const slideOne = document.querySelector('#slide-1');
+    // const slideTwo = document.querySelector('#slide-2');
+    // const slideThree = document.querySelector('#slide-3');
+    // const slideFour = document.querySelector('#slide-4');
+    // const thumbOne = document.querySelector('#thumb-1');
+    // const thumbTwo = document.querySelector('#thumb-2');
+    // const thumbThree = document.querySelector('#thumb-3');
+    // const thumbFour = document.querySelector('#thumb-4');
+
+    // if (slideOne.classList.contains('current')) {
+    //   thumbOne.classList.add('current');
+    //   thumbTwo.classList.remove('current');
+    //   thumbThree.classList.remove('current');
+    //   thumbFour.classList.remove('current');
+    // } else if (slideTwo.classList.contains('current')) {
+    //   thumbTwo.classList.add('current');
+    //   thumbOne.classList.remove('current');
+    //   thumbThree.classList.remove('current');
+    //   thumbFour.classList.remove('current');
+    // } else if (slideThree.classList.contains('current')) {
+    //   thumbThree.classList.add('current');
+    //   thumbTwo.classList.remove('current');
+    //   thumbOne.classList.remove('current');
+    //   thumbFour.classList.remove('current');
+    // } else if (slideFour.classList.contains('current')) {
+    //   thumbFour.classList.add('current');
+    //   thumbTwo.classList.remove('current');
+    //   thumbThree.classList.remove('current');
+    //   thumbOne.classList.remove('current');
+    // }
+</script>

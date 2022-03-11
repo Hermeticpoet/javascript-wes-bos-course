@@ -10,7 +10,67 @@
 
 <body>
   <script>
+    function makePizza(toppings = []) {
+      return new Promise((resolve, reject) => {
+        const amountOfTimeToBake = 500 + toppings.length * 200;
+        // wait 2 seconds for the pizza to cook:
+        setTimeout(() => {
+          // when you are ready, you can resolve this promise
+          resolve(
+            `Here is your pizza 🍕 with the toppings; ${toppings.join(', ')}`
+          );
+        }, amountOfTimeToBake);
+        // if something went wrong we can reject this promise
+        // reject('Your pizza was burnt!!!');
+      });
+    }
 
+    const pepperoniPizza = makePizza(['pepperoni', 'cheese', 'bacon', 'anchovies']);
+    console.log(pepperoniPizza);
+    
+    // console.log('First');
+    // makePizza(['pepperoni'])
+    //   .then((pizza) => {
+    //     console.log(pizza);
+    //     return makePizza(['cheese', 'onions']);
+    //   })
+    //   .then((pizza) => {
+    //     console.log(pizza);
+    //   });
+    // console.log('Right After');
+
+    // Run them concunrrently
+    const pizzaPromise1 = makePizza(['hot peppers', 'onions', 'feta']);
+    const pizzaPromise2 = makePizza(['one', 'two', '3']);
+    const pizzaPromise3 = makePizza([
+      'pepperoni',
+      'cheese',
+      'anchioves',
+      'bacon',
+      'pineapple',
+    ]);
+
+    // Static methods live ON an object!
+    const dinnerPromise = Promise.all([
+      pizzaPromise1,
+      pizzaPromise2,
+      pizzaPromise3,
+    ]);
+    
+    dinnerPromise.then((pizzas) => {
+      console.log(pizzas);
+    });
+
+    // Use array destruction to the above
+    dinnerPromise.then((pizzas) => {
+      const [hottie, nums, choice] = pizzas;
+      console.log([...pizzas]);
+    });
+
+    // or similarly use this syntax:
+    dinnerPromise.then(([hottie, nums, choice]) => {
+      console.log([hottie, nums, choice]);
+    });
   </script>
 </body>
 

@@ -9,7 +9,63 @@
 </head>
 
 <body>
+  <p>Hey Kev, here is your P element</p>
+  <div class="wrapper">
+    <p>Inner P element, inside the wrapper.</p>
+  </div>
+  <script>
+    const person = {
+      name: 'Kevin Walton',
+      sayHi() {
+        // console.log(`Hi ${this.name}.`);
+        return `Hey ${this.name}.`;
+      },
+    };
 
+    const aoife = { name: 'Aoife' };
+
+    // const sayHi = person.sayHi.bind(person);
+    // const sayHi = person.sayHi.bind(aoife);
+    const sayHi = person.sayHi.bind({ name: 'Tony' });
+    
+    // QS Example
+    // by calling bind against querySelector, we say when the $ function is run,
+    // use 'document' as the 'this' value
+    const $ = document.querySelector.bind(document);
+    const lookFor = document.querySelectorAll.bind(document);
+    console.log($('p'));
+    console.log(lookFor('p'));
+
+    const bill = {
+      total: 333,
+      calculate(taxRate) {
+        return this.total + this.total * taxRate;
+      },
+      describe(mealType, drinkType, taxRate) {
+        console.log(
+          `Your meal of ${mealType} with a drink of ${drinkType} was ${this.calculate(
+            taxRate
+          )}`
+        );
+      },
+    };
+
+    const total = bill.calculate(0.13);
+    console.log(total);
+
+    // Pre-Installed - batteries included:
+    const calc = bill.calculate.bind({ total: 250 }, 0.13);
+    console.log(`This is bind: ${calc()}`);
+
+    const total2 = bill.calculate.call({ total: 300 }, 0.06);
+    console.log(`This is call: ${total2}`);
+
+    const total3 = bill.calculate.apply({ total: 122 }, [0.45]);
+    console.log(`This is apply: ${total3}`);
+
+    const myMeal = bill.describe.apply(bill, ['Hamburger', 'Coke', 0.11]);
+    console.log(myMeal);
+  </script>
 </body>
 
 </html>

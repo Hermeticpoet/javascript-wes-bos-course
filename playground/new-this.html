@@ -9,7 +9,43 @@
 </head>
 
 <body>
+  
+  <button class="one">Button 1</button>
+  <script>
+    const myDate = new Date('august 11, 2025');
+    console.dir(myDate);
+    console.dir(myDate.getFullYear());
 
+    // Function that makes an Object is called a Constructor
+    function Pizza(toppings = [], customer) {
+      console.log('making a pizza');
+      // save the toppings that were passed in to this instance of pizza
+      this.toppings = toppings;
+      this.customer = customer;
+      this.id = Math.floor(Math.random() * 11).toString(16);
+    }
+
+    const pepperoniPizza = new Pizza(['pepporoni, cheese'], 'Kevin');
+    const hawaiianPizza = new Pizza(['pineapple, cheese'], 'Alan');
+    console.log(pepperoniPizza);
+    console.log(hawaiianPizza);
+
+    // const button = document.querySelector('.one');
+
+    // // The THIS keyword in Js refers to the instanceof a Object that the function is bound too!
+    // // THIS keyword is also always scoped to a function!!!
+    // // Arrow functions are not scoped so THIS refers to any higher level function or if not then the Window Object
+    // // Therefore you can use an Arrow function within a higher function and use THIS to refer to higher function:
+    // function tellMeAboutThis() {
+    //   console.log('outside', this);
+    //   setTimeout(() => {
+    //     console.log('inside', this);
+    //     this.textContent = 'You Clicked';
+    //   }, 1000);
+    // }
+
+    // button.addEventListener('click', tellMeAboutThis);
+  </script>
 </body>
 
 </html>
