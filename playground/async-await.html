@@ -10,7 +10,44 @@
 
 <body>
   <script>
+    function wait(ms = 0) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+      });
+    }
 
+    async function go() {
+      console.log('starting');
+      await wait(2000);
+      console.log('ending');
+    }
+
+    go();
+
+    // Function declaration
+    async function fd() {}
+
+    // Arrow function
+    const arrowFn = async () => {};
+
+    // Callback functions
+    window.addEventListener('click', async () => {});
+
+    //
+    const person = {
+      // method
+      async sayHi() {
+        console.log('This one');
+      },
+      // methos shorthand
+      async sayHello() {
+        console.log('this one');
+      },
+      // function property
+      sayHey: async () => {
+        console.log('this one');
+      },
+    };
   </script>
 </body>
 
